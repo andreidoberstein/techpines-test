@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tiao_api
+    working_dir: /var/www/html
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  web:
+    image: nginx:1.27-alpine
+    container_name: tiao_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+
+  db:
+    image: postgres:16-alpine
+    container_name: tiao_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=tiao_db
+      - POSTGRES_USER=tiao
+      - POSTGRES_PASSWORD=secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
