@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Song;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,13 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-//        User::factory()->create([
-//            'name' => 'Test ser',
-//            'password' => 'secret',
-//            'email' => 'test2@example.com',
-//        ]);
+      // Top 5
+      for ($i=1; $i<=5; $i++) {
+        Song::factory()->top($i)->create([
+          'title' => "TOP {$i} - Tião Carreiro & Pardinho",
+        ]);
+      }
+      // Resto
+      Song::factory(12)->create(); // approved_at set por default
 
       User::query()->firstOrCreate(
         ['email' => 'admin@example.com'],
