@@ -2,17 +2,20 @@ import { api } from '@/lib/api';
 import { Suggestion, ApiResponse, SuggestionRequest, Song } from '@/types';
 
 export const suggestionsService = {
-  async createSuggestion(suggestion: SuggestionRequest): Promise<Suggestion> {
+  async getSuggestion(): Promise<Suggestion> {
+      const response = await api.get<Suggestion>(`suggestions`);
+      console.log(response)
+      return response.data;
+    },
 
-    console.log(suggestion)
+  async createSuggestion(suggestion: SuggestionRequest): Promise<Suggestion> {
     const response = await api.post<ApiResponse<Suggestion>>('/suggestions', suggestion);
-    console.log(response)
     return response.data.data;
   },
 
   async approveSuggestion(id: number): Promise<{ suggestion: Suggestion; song: Song }> {
     const response = await api.post<{ suggestion: ApiResponse<Suggestion>; song: ApiResponse<Song> }>(
-      `/api/admin/suggestions/${id}/approve`
+      `suggestions/${id}/approve`
     );
     return {
       suggestion: response.data.suggestion.data,
@@ -21,7 +24,7 @@ export const suggestionsService = {
   },
 
   async rejectSuggestion(id: number): Promise<Suggestion> {
-    const response = await api.post<ApiResponse<Suggestion>>(`/api/admin/suggestions/${id}/reject`);
+    const response = await api.post<ApiResponse<Suggestion>>(`suggestions/${id}/reject`);
     return response.data.data;
   },
 };

@@ -204,7 +204,7 @@ export const Songs = () => {
           </div>
 
           {/* Pagination - only show if no search query */}
-          {!searchQuery && songsData && songsData.meta.last_page > 1 && (
+          {!searchQuery && songsData && songsData.last_page > 1 && (
             <div className="flex items-center justify-center space-x-4">
               <Button
                 variant="outline"
@@ -217,14 +217,14 @@ export const Songs = () => {
               
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-muted-foreground">
-                  Página {songsData.meta.current_page} de {songsData.meta.last_page}
+                  Página {songsData.current_page} de {songsData.last_page}
                 </span>
               </div>
               
               <Button
                 variant="outline"
                 onClick={nextPage}
-                disabled={currentPage === songsData.meta.last_page}
+                disabled={currentPage === songsData.last_page}
               >
                 Próxima
                 <ChevronRight className="h-4 w-4 ml-2" />

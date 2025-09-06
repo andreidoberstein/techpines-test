@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,34 +9,24 @@ import { useToast } from '@/hooks/use-toast';
 import { extractYouTubeId, getYouTubeThumbnail } from '@/lib/schemas';
 import { CheckCircle, XCircle, AlertTriangle, Music, ExternalLink, Hash } from 'lucide-react';
 
-// Simulação de sugestões pendentes (como não tem endpoint de listagem)
-const mockPendingSuggestions = [
-  {
-    id: 1,
-    title: 'Rei do Gado',
-    youtube_url: 'https://www.youtube.com/watch?v=example1',
-    video_id: 'example1',
-    status: 'pending',
-    created_at: '2024-01-15T10:30:00Z'
-  },
-  {
-    id: 2,
-    title: 'Pagode em Brasília',
-    youtube_url: 'https://www.youtube.com/watch?v=example2',
-    video_id: 'example2',
-    status: 'pending',
-    created_at: '2024-01-14T15:20:00Z'
-  }
-];
-
 export const Admin = () => {
   const { toast } = useToast();
-  const [suggestions] = useState(mockPendingSuggestions);
+  const [suggestions, setSuggestions] = useState([]);
   const [processingId, setProcessingId] = useState<number | null>(null);
   const [testId, setTestId] = useState<string>('');
   const [testAction, setTestAction] = useState<'approve' | 'reject' | null>(null);
-
+  const [isLoading, setIsLoading] = useState(false);
   const HAS_ADMIN_LIST = import.meta.env.VITE_HAS_ADMIN_LIST === '1';
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      const data = await suggestionsService.getSuggestion()
+      setSuggestions(data)
+    }
+
+    fetchSuggestions()
+      .catch(console.error)
+  }, [processingId])
 
   const handleApproveSuggestion = async (id: number) => {
     setProcessingId(id);
