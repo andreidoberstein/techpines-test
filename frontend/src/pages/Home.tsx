@@ -83,6 +83,7 @@ export const Home = () => {
           ) : top5Songs && top5Songs.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
               {top5Songs.map((song, index) => (
+                
                 <div key={song.id} className="relative">
                   <div className="absolute -top-2 -left-2 z-10 bg-sertanejo-green text-sertanejo-cream rounded-full w-8 h-8 flex items-center justify-center font-bold shadow-sertanejo">
                     {index + 1}
