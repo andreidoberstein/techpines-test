@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Song extends Model
+class Suggestion extends Model
 {
   use HasFactory, HasUuids;
 
@@ -14,14 +14,28 @@ class Song extends Model
   protected $keyType = 'string';
 
   protected $fillable = [
+    'user_id',
     'title',
     'youtube_url',
+    'status',
+    'reviewed_by',
+    'reviewed_at',
     'position',
-    'approved_at',
   ];
 
   protected $casts = [
-    'approved_at' => 'datetime',
+    'reviewed_at' => 'datetime',
     'position'    => 'integer',
   ];
+
+  // Relacionamentos úteis
+  public function author()
+  {
+    return $this->belongsTo(User::class, 'user_id');
+  }
+
+  public function reviewer()
+  {
+    return $this->belongsTo(User::class, 'reviewed_by');
+  }
 }

@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
   Route::put('/users/{user}', [UserController::class, 'update']);
   Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
+  Route::get('/suggestions/', [SuggestionController::class, 'indexRest']);
   Route::post('/suggestions/{id}/approve', [SuggestionController::class, 'approve']);
   Route::post('/suggestions/{id}/reject',  [SuggestionController::class, 'reject']);
 
