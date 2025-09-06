@@ -4,6 +4,7 @@ import { Song, PaginatedResponse, ApiResponse, SongRequest } from '@/types';
 export const songsService = {
   async getTop5(): Promise<Song[]> {
     const response = await api.get<ApiResponse<Song[]>>('songs/top5');
+    console.log(response)
     return response.data;
   },
 
