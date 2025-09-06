@@ -46,8 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string) => {
     try {
       const userData = await authService.login({ email, password });
-    console.log(userData)
-
+      console.log(userData)
       setUser(userData);
       toast({
         title: 'Login realizado com sucesso!',

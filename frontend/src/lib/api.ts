@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8080/api';
+const TOKEN_KEY = "access_token"; 
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -11,17 +12,38 @@ export const api = axios.create({
   },
 });
 
-export const csrf = async (): Promise<void> => {
-  await api.get('/sanctum/csrf-cookie');
-};
+export function setAuthToken(token?: string) {
+  if (token) {
+    localStorage.setItem(TOKEN_KEY, token);
+    api.defaults.headers.common.Authorization = `Bearer ${token}`;
+  } else {
+    localStorage.removeItem(TOKEN_KEY);
+    delete api.defaults.headers.common.Authorization;
+  }
+}
+
+// Ao iniciar o app, reativa o token salvo (auto-login)
+const saved = localStorage.getItem(TOKEN_KEY);
+if (saved) setAuthToken(saved);
+
+
+// Garante o header mesmo em instâncias/requests manuais
+// api.interceptors.request.use((config) => {
+//   const token = localStorage.getItem(TOKEN_KEY);
+//   if (token && !config.headers?.Authorization) {
+//     config.headers = { ...config.headers, Authorization: `Bearer ${token}` };
+//   }
+//   return config;
+// });
 
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      window.location.href = '/login';
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      //setAuthToken(); // limpa token
+      // window.location.href = "/login";
     }
-    return Promise.reject(error);
+    return Promise.reject(err);
   }
 );
 

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Song } from '@/types';
-import { getYouTubeThumbnail } from '@/lib/schemas';
+import { extractYouTubeId, getYouTubeThumbnail } from '@/lib/schemas';
 import { Play, Edit, Trash2 } from 'lucide-react';
 
 interface SongCardProps {
@@ -19,8 +19,8 @@ export const SongCard = ({
   onDelete,
   showActions = false
 }: SongCardProps) => {
-  const thumbnail = getYouTubeThumbnail(song.video_id);
-  
+  const videoId = extractYouTubeId(song.youtube_url)
+  const thumbnail = getYouTubeThumbnail(videoId);
   const isTop5 = variant === 'top5';
   const isList = variant === 'list';
 
