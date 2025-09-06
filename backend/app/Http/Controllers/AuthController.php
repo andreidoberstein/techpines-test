@@ -22,7 +22,7 @@ class AuthController extends Controller
     $user = Auth::user();
 
     // Access token (15min)
-    $accessToken = $user->createToken('access-token', ['*'], now()->addMinutes(15))->plainTextToken;
+    $accessToken = $user->createToken('access-token', ['*'], now()->addMinutes(60))->plainTextToken;
 
     // Refresh token (30d)
     $refreshToken = $user->createToken('refresh-token', ['*'], now()->addDays(30))->plainTextToken;

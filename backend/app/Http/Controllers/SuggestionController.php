@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\DB;
 
 class SuggestionController extends Controller
 {
+  public function indexRest()
+  {
+    $suggestions = Suggestion::orderBy('created_at', 'asc')
+        ->where('status','=','pending')
+        ->get();
+
+    return response()->json($suggestions);
+  }
   /** Criar sugestão (público ou autenticado) */
   public function store(SuggestionStoreRequest $request)
   {
