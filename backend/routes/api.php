@@ -5,6 +5,9 @@ use App\Http\Controllers\SongController;
 use App\Http\Controllers\SuggestionController;
 use App\Http\Controllers\UserController;
 
+Route::get('/health', function () {
+  return response()->json(['message' => 'API Laravel funcionando!']);
+});
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/refresh', [AuthController::class, 'refresh']);
 Route::get('/songs/top5', [SongController::class, 'indexTop5']);
