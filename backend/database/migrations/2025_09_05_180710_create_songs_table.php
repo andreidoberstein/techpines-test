@@ -25,11 +25,10 @@ return new class extends Migration
       $table->index('position');
     });
 
-    // ✅ PostgreSQL: índice UNIQUE parcial para garantir
-    //  - posição única somente quando não-nula
-    //  - youtube_url única somente quando approved_at não é null
-    DB::statement('CREATE UNIQUE INDEX songs_position_unique_when_set ON songs (position) WHERE position IS NOT NULL;');
-    DB::statement('CREATE UNIQUE INDEX songs_youtube_unique_when_approved ON songs (youtube_url) WHERE approved_at IS NOT NULL;');
+    if (DB::connection()->getDriverName() === 'pgsql') {
+      DB::statement('CREATE UNIQUE INDEX songs_position_unique_when_set ON songs (position) WHERE position IS NOT NULL;');
+      DB::statement('CREATE UNIQUE INDEX songs_youtube_unique_when_approved ON songs (youtube_url) WHERE approved_at IS NOT NULL;');
+    }
   }
 
   public function down(): void
