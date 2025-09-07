@@ -32,6 +32,8 @@ class SuggestionController extends Controller
       'position'    => $data['position'] ?? null,
     ]);
 
+    $suggestion->refresh();
+
     return response()->json($suggestion, 201);
   }
 

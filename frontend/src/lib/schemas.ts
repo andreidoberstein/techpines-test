@@ -56,12 +56,23 @@ export const getYouTubeThumbnail = (videoId: string): string => {
 };
 
 // Helper para acessar titulo com API do Youtube
+// export const getYouTubeTitle = async (videoId: string): Promise<string | null> => {
+//   const apiKey = import.meta.env.VITE_YT_API_KEY;
+//   const urlGoogleApi = "https://www.googleapis.com/youtube/v3/videos"
+//   const { data } = await axios.get<YouTubeVideosListResponse>(
+//     urlGoogleApi,
+//     { params: { part: "snippet", id: videoId, key: apiKey } }
+//   );
+//   return data.items?.[0]?.snippet?.title ?? null;
+// };
+
 export const getYouTubeTitle = async (videoId: string): Promise<string | null> => {
   const apiKey = import.meta.env.VITE_YT_API_KEY;
   const urlGoogleApi = "https://www.googleapis.com/youtube/v3/videos"
   const { data } = await axios.get<YouTubeVideosListResponse>(
     urlGoogleApi,
-    { params: { part: "snippet", id: videoId, key: apiKey } }
+    { params: { part: "snippet,statistics", id: videoId, key: apiKey } }
   );
+  console.log(data.items?.[0]?.statistics)
   return data.items?.[0]?.snippet?.title ?? null;
 };

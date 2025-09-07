@@ -70,8 +70,6 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/ramsey/collection" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/ramsey/uuid" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/sebastian/cli-parser" />
-      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/sebastian/code-unit" />
-      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/sebastian/code-unit-reverse-lookup" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/sebastian/comparator" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/sebastian/complexity" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/sebastian/diff" />
@@ -136,6 +134,21 @@
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/psr/http-server-handler" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/psr/http-server-middleware" />
       <excludeFolder url="file://$MODULE_DIR$/backend/vendor/symfony/psr-http-message-bridge" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/brianium/paratest" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/doctrine/deprecations" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/fidry/cpu-core-counter" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/jean85/pretty-package-versions" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/pestphp/pest" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/pestphp/pest-plugin" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/pestphp/pest-plugin-arch" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/pestphp/pest-plugin-laravel" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/pestphp/pest-plugin-mutate" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/pestphp/pest-plugin-profanity" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/reflection-docblock" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpdocumentor/type-resolver" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/phpstan/phpdoc-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/backend/vendor/ta-tikoma/phpunit-architecture-test" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
