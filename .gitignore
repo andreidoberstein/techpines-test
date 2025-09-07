@@ -24,3 +24,5 @@ backend/.nova
 .idea/*
 .idea/php.xml
 .idea/techpines-test.iml
+
+backend/.vercel
