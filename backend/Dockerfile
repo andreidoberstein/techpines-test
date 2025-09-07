@@ -1,28 +1,33 @@
-# ---- Stage 1: dependências PHP (Composer) ----
+# ---- Stage 1: dependências (Composer) ----
 FROM composer:2 AS vendor
 WORKDIR /app
 
-# Copia tudo (usa .dockerignore pra não mandar node_modules/vendor locais)
+# opção mais cacheável: instala deps sem scripts primeiro
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --prefer-dist --no-interaction --no-progress \
+    --optimize-autoloader --classmap-authoritative --no-scripts
+
+# agora copia o projeto todo (inclui artisan)
 COPY . .
 
-# Agora o artisan já existe, então os scripts do Composer podem rodar
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress \
-    --optimize-autoloader --classmap-authoritative
+# roda autoload + scripts (ex.: package:discover)
+RUN composer dump-autoload --optimize
 
-
-# ---- Stage 2: runtime nginx+php-fpm ----
-FROM richarvey/nginx-php-fpm:1.7.2
-ENV WEBROOT=/var/www/html/public \
+# ---- Stage 2: runtime (Nginx + PHP 8.x) ----
+FROM webdevops/php-nginx:8.3-alpine   # >> runtime PHP 8.3 com nginx
+ENV WEB_DOCUMENT_ROOT=/var/www/html/public \
     APP_ENV=production \
     APP_DEBUG=false \
     LOG_CHANNEL=stderr
 
-# Copia tudo (já com vendor) do stage 1
+WORKDIR /var/www/html
 COPY --from=vendor /app /var/www/html
 
-# (Opcional) use seu Nginx conf:
-# COPY conf/nginx/nginx-site.conf /etc/nginx/conf.d/default.conf
+# permissões para cache/storage
+RUN chown -R application:application storage bootstrap/cache
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# healthcheck direto no Nginx (não passa pelo PHP)
+RUN printf 'location = /health { access_log off; add_header Content-Type text/plain; return 200 "OK"; }\n' \
+    > /opt/docker/etc/nginx/vhost.common.d/zz-health.conf
 
-CMD ["/start.sh"]
+# prontos! a imagem já inicia com nginx+php-fpm
