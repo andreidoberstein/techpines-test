@@ -14,7 +14,7 @@ COPY . .
 RUN composer dump-autoload --optimize
 
 # ---- Stage 2: runtime (Nginx + PHP 8.x) ----
-FROM webdevops/php-nginx:8.3-alpine   # >> runtime PHP 8.3 com nginx
+FROM webdevops/php-nginx:8.3-alpine
 ENV WEB_DOCUMENT_ROOT=/var/www/html/public \
     APP_ENV=production \
     APP_DEBUG=false \
@@ -30,4 +30,3 @@ RUN chown -R application:application storage bootstrap/cache
 RUN printf 'location = /health { access_log off; add_header Content-Type text/plain; return 200 "OK"; }\n' \
     > /opt/docker/etc/nginx/vhost.common.d/zz-health.conf
 
-# prontos! a imagem já inicia com nginx+php-fpm
