@@ -9,20 +9,15 @@ import { usePagination } from '@/hooks/usePagination';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Music2 } from 'lucide-react';
+import { useSongsPagination } from '@/hooks/useSongsPagination';
 
 export const Home = () => {
   const { toast } = useToast();
-  const { currentPage, goToPage, nextPage, prevPage } = usePagination();
   const [isSubmittingSuggestion, setIsSubmittingSuggestion] = useState(false);
 
   const { data: top5Songs, isLoading: loadingTop5 } = useQuery({
     queryKey: ['songs', 'top5'],
     queryFn: songsService.getTop5,
-  });
-
-  const { data: songsData, isLoading: loadingSongs } = useQuery({
-    queryKey: ['songs', 'paginated', currentPage],
-    queryFn: () => songsService.getSongs(currentPage, 10),
   });
 
   const handleSuggestionSubmit = async (data: { youtube_url: string; title?: string }) => {
@@ -33,7 +28,7 @@ export const Home = () => {
         title: 'Sugestão enviada com sucesso!',
         description: 'Obrigado pela sua contribuição. Analisaremos sua sugestão em breve.',
       });
-    } catch (error: any) {
+    } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Erro ao enviar sugestão',
@@ -44,9 +39,19 @@ export const Home = () => {
     }
   };
 
+  const perPage = 10;
+  const {
+    songsData,
+    loadingSongs,
+    error,
+    currentPage,
+    prevPage,
+    nextPage,
+    goToPage
+  } = useSongsPagination(1, perPage);
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
       <section className="bg-gradient-hero py-16 px-4">
         <div className="container mx-auto text-center">
           <div className="flex justify-center mb-6">
@@ -64,7 +69,6 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Top 5 Section */}
       <section className="py-16 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12">
@@ -100,7 +104,6 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* All Songs Section */}
       <section className="py-16 px-4 bg-sertanejo-cream/10">
         <div className="container mx-auto">
           <div className="text-center mb-12">
@@ -116,6 +119,10 @@ export const Home = () => {
             <div className="flex justify-center py-12">
               <LoadingSpinner size="lg" />
             </div>
+          ) : error ? (
+            <div className="text-center py-12 text-red-500">
+              {error}
+            </div>
           ) : songsData && songsData.data.length > 0 ? (
             <>
               <div className="space-y-3 mb-8">
@@ -124,28 +131,27 @@ export const Home = () => {
                 ))}
               </div>
 
-              {/* Pagination */}
               {songsData.last_page > 1 && (
                 <div className="flex items-center justify-center space-x-4">
                   <Button
                     variant="outline"
                     onClick={prevPage}
-                    disabled={currentPage === 1}
+                    disabled={currentPage === 1 || loadingSongs}
                   >
                     <ChevronLeft className="h-4 w-4 mr-2" />
                     Anterior
                   </Button>
-                  
+
                   <div className="flex items-center space-x-2">
                     <span className="text-sm text-muted-foreground">
                       Página {songsData.current_page} de {songsData.last_page}
                     </span>
                   </div>
-                  
+
                   <Button
                     variant="outline"
                     onClick={nextPage}
-                    disabled={currentPage === songsData.last_page}
+                    disabled={currentPage === songsData.last_page || loadingSongs}
                   >
                     Próxima
                     <ChevronRight className="h-4 w-4 ml-2" />
@@ -161,7 +167,6 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Suggestion Section */}
       <section className="py-16 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12">
