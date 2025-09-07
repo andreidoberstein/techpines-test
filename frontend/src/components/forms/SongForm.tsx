@@ -28,7 +28,7 @@ export const SongForm = ({ song, onSubmit, onCancel, isLoading }: SongFormProps)
   } = useForm<SongFormData>({
     resolver: zodResolver(songSchema),
     defaultValues: song ? {
-      title: song.title,
+      title: song.title || '',
       youtube_url: song.youtube_url,
       artist: song.artist || '',
     } : undefined,

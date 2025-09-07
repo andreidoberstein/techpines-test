@@ -5,16 +5,26 @@ export interface User {
   role: 'admin' | 'user';
 }
 
-export interface Song {
-  id: number;
+export type Song = {
+  id: string;
   title: string;
-  artist?: string;
-  video_id: string;
-  youtube_url: string;
+  artist: string;
+  video_id?: string;
+  youtube_url?: string;
   play_count?: number;
   is_top5?: boolean;
-  created_at: string;
-}
+  approved_at?: string | null;
+  position?: number | null;
+  created_at?: string;
+};
+
+export type PaginatedSongs = {
+  data: Song[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+};
 
 export interface Suggestion {
   id: number;

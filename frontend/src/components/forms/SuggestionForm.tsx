@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { suggestionSchema, SuggestionFormData, extractYouTubeId, getYouTubeThumbnail, getYouTubeName, getYouTubeTitle } from '@/lib/schemas';
+import { suggestionSchema, SuggestionFormData, extractYouTubeId, getYouTubeThumbnail, getYouTubeTitle } from '@/lib/schemas';
 import { useEffect, useState } from 'react';
 import { Music, Info } from 'lucide-react';
 
@@ -16,7 +16,6 @@ interface SuggestionFormProps {
 
 export const SuggestionForm = ({ onSubmit, isLoading }: SuggestionFormProps) => {
   const [previewUrl, setPreviewUrl] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
   
   const {
     register,
@@ -24,6 +23,7 @@ export const SuggestionForm = ({ onSubmit, isLoading }: SuggestionFormProps) => 
     formState: { errors },
     watch,
     reset,
+    setValue
   } = useForm<SuggestionFormData>({
     resolver: zodResolver(suggestionSchema),
   });
@@ -37,23 +37,22 @@ export const SuggestionForm = ({ onSubmit, isLoading }: SuggestionFormProps) => 
         setPreviewUrl(getYouTubeThumbnail(videoId));
         const fetchTitle = async () => {
           const title = await getYouTubeTitle(videoId)
-          setTitle(title);
+          setValue("title", title);
         }
         fetchTitle()
           .catch(console.error)
       } else {
         setPreviewUrl('');
-        setTitle('');
       }
     }
   }, [youtubeUrl]);
 
   const handleFormSubmit = async (data: SuggestionFormData) => {
     try {
+      console.log(data)
       await onSubmit(data);
       reset();
       setPreviewUrl('');
-      setTitle('');
     } catch (error) {
       console.error('Erro ao enviar sugestão:', error);
     }
@@ -113,12 +112,11 @@ export const SuggestionForm = ({ onSubmit, isLoading }: SuggestionFormProps) => 
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="title">Título da música (opcional)</Label>
+            <Label htmlFor="title">Título da música</Label>
             <Input
               id="title"
-              value={title}
               {...register('title')}
-              placeholder="Se quiser, digite o título da música"
+              placeholder="Digite o título da música"
               disabled={isLoading}
             />
             {errors.title && (
