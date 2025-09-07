@@ -1,11 +1,14 @@
 # ---- Stage 1: dependências PHP (Composer) ----
 FROM composer:2 AS vendor
 WORKDIR /app
-COPY composer.json composer.lock ./
-# composer só aqui no stage de build
-RUN composer install --no-dev --prefer-dist --no-interaction --no-progress --optimize-autoloader --classmap-authoritative
+
+# Copia tudo (usa .dockerignore pra não mandar node_modules/vendor locais)
 COPY . .
-RUN composer dump-autoload --optimize
+
+# Agora o artisan já existe, então os scripts do Composer podem rodar
+RUN composer install --no-dev --prefer-dist --no-interaction --no-progress \
+    --optimize-autoloader --classmap-authoritative
+
 
 # ---- Stage 2: runtime nginx+php-fpm ----
 FROM richarvey/nginx-php-fpm:1.7.2
