@@ -24,6 +24,7 @@ php artisan migrate --force
 # seed opcional (só 1x)
 if [ "$SEED_ON_START" = "true" ] && [ ! -f storage/.seeded ]; then
   echo "[entrypoint] Running seed..."
+  php artisan migrate:fresh --force
   php artisan db:seed --force
   touch storage/.seeded
   chown application:application storage/.seeded || true
