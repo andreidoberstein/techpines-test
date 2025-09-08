@@ -3,9 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { Music, Users, Settings, TrendingUp, Plus } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { suggestionsService } from '@/services/suggestions';
 
 export const Dashboard = () => {
   const { user, isAdmin } = useAuth();
+  // const { suggestions, setSuggestions } = useState(0)
+
+  useEffect(() => {
+    const response = suggestionsService.getSuggestion()
+    console.log(response)
+  })
 
   return (
     <div className="min-h-screen bg-background">
