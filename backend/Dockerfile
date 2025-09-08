@@ -30,3 +30,8 @@ RUN chown -R application:application storage bootstrap/cache
 RUN printf 'location = /health { access_log off; add_header Content-Type text/plain; return 200 "OK"; }\n' \
     > /opt/docker/etc/nginx/vhost.common.d/zz-health.conf
 
+# entrypoint wrapper que roda migrate/seed uma vez
+COPY docker/entrypoint.sh /usr/local/bin/app-entrypoint
+RUN chmod +x /usr/local/bin/app-entrypoint
+ENTRYPOINT ["/usr/local/bin/app-entrypoint"]
+# a imagem já chama o entrypoint original internamente; CMD padrão (supervisord) será repassado
