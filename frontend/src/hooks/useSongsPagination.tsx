@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { PaginatedSongs } from '@/types';
 
 
-const API_BASE = import.meta.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080/api";
 
 export function useSongsPagination(initialPage = 1, perPage = 10) {
   const [currentPage, setCurrentPage] = useState(initialPage);

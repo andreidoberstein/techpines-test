@@ -16,6 +16,7 @@ RUN composer dump-autoload --optimize
 # ---- Stage 2: runtime (Nginx + PHP 8.x) ----
 FROM webdevops/php-nginx:8.3-alpine
 ENV WEB_DOCUMENT_ROOT=/var/www/html/public \
+    WEB_DOCUMENT_INDEX=index.php \
     APP_ENV=production \
     APP_DEBUG=false \
     LOG_CHANNEL=stderr

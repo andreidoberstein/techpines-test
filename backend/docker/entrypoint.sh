@@ -45,3 +45,5 @@ fi
 # fallback
 [ $# -eq 0 ] && set -- supervisord
 exec "$@"
+
+exec /opt/docker/bin/entrypoint.sh "$@"

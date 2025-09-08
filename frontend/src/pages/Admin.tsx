@@ -30,8 +30,11 @@ export const Admin = () => {
 
   const handleApproveSuggestion = async (id: number) => {
     setProcessingId(id);
+      console.log('id ' + id)
+
     try {
       const result = await suggestionsService.approveSuggestion(id);
+      console.log('result ' + result.song)
       toast({
         title: 'Sugestão aprovada com sucesso!',
         description: `A música "${result.song.title}" foi adicionada ao catálogo.`,
@@ -44,8 +47,9 @@ export const Admin = () => {
       toast({
         variant: 'destructive',
         title: 'Erro ao aprovar sugestão',
-        description: error.response?.data?.message || 'Tente novamente mais tarde.',
+        description: 'Tente novamente mais tarde.',
       });
+      console.error(error.response?.data)
     } finally {
       setProcessingId(null);
     }
@@ -87,11 +91,11 @@ export const Admin = () => {
       return;
     }
 
-    if (testAction === 'approve') {
-      await handleApproveSuggestion(id);
-    } else {
-      await handleRejectSuggestion(id);
-    }
+    // if (testAction === 'approve') {
+    //   await handleApproveSuggestion(id);
+    // } else {
+    //   await handleRejectSuggestion(id);
+    // }
   };
 
   return (

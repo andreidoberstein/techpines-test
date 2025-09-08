@@ -68,7 +68,6 @@ export const getYouTubeStats = async (videoId: string): Promise<any | null> => {
         urlGoogleApi,
         { params: { part: "snippet,statistics", id: videoId, key: apiKey } }
     );
-    console.log(data.items?.[0])
     const likeCount = data.items?.[0]?.statistics?.likeCount
     const viewCount = data.items?.[0]?.statistics?.viewCount
     const title = data.items?.[0]?.snippet?.title

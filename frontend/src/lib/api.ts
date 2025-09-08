@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8080/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
 const TOKEN_KEY = "access_token"; 
 
 export const api = axios.create({
@@ -25,16 +25,6 @@ export function setAuthToken(token?: string) {
 // Ao iniciar o app, reativa o token salvo (auto-login)
 const saved = localStorage.getItem(TOKEN_KEY);
 if (saved) setAuthToken(saved);
-
-
-// Garante o header mesmo em instâncias/requests manuais
-// api.interceptors.request.use((config) => {
-//   const token = localStorage.getItem(TOKEN_KEY);
-//   if (token && !config.headers?.Authorization) {
-//     config.headers = { ...config.headers, Authorization: `Bearer ${token}` };
-//   }
-//   return config;
-// });
 
 api.interceptors.response.use(
   (res) => res,

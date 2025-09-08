@@ -26,3 +26,6 @@ backend/.nova
 .idea/techpines-test.iml
 
 backend/.vercel
+
+frontend/node_modules
+frontend/.idea

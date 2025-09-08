@@ -14,12 +14,14 @@ export const suggestionsService = {
   },
 
   async approveSuggestion(id: number): Promise<{ suggestion: Suggestion; song: Song }> {
+    console.log('id ' + id)
     const response = await api.post<{ suggestion: ApiResponse<Suggestion>; song: ApiResponse<Song> }>(
       `suggestions/${id}/approve`
     );
+    console.log('response ', response)
     return {
-      suggestion: response.data.suggestion.data,
-      song: response.data.song.data,
+      suggestion: response.data.suggestion,
+      song: response.data.song,
     };
   },
 
